@@ -2,7 +2,7 @@ import { Link } from "react-router";
 
 function Home() {
   return (
-    <div className="bg-dark">
+    <div className="bg-[#5278B5]">
       <nav className="flex px-4 py-2 items-center bg-primary ">
 
         <a className="mr-2 p-2 text-white" href="example.html">Exemplo</a>
@@ -12,9 +12,9 @@ function Home() {
         <Link className="py-2 px-4 bg-secondary text-white rounded-x1 ml-auto" to="/login">Preencha</Link>
       </nav>
       <main>
-        <section id="about" className="bg-secondary">
+        <section id="about" className="bg-secondary py-5 ">
           <div className="max-w-lg mx-auto py-5 ">
-            <h2 >
+            <h2>
               Como a ProtesePay Muda Vidas?
             </h2>
             <div className="flex gap-8">
@@ -37,7 +37,7 @@ function Home() {
           </div>
         </section>
         <section id="prices">
-          <div className="max-w-lg mx-auto py-2 ">
+          <div className="max-w-lg mx-auto py-5">
             <h2>
               Nossos Preços R$
             </h2>
