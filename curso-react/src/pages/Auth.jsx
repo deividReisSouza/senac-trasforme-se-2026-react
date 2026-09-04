@@ -7,8 +7,7 @@ function Auth() {
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
     const [alert, setAlert] = useState("");
-
-    const nav = useNavigate()
+    const nav = useNavigate();
 
     function handleLogin(){
         const users = JSON.parse(localStorage.getItem('users'))
@@ -20,6 +19,7 @@ function Auth() {
         }
 
         if(user.senha == pass){
+            const Logado = 
             nav("/painel")
         }else{
             setAlert("Senha incorreta")
