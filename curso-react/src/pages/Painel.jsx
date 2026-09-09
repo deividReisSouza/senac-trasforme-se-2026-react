@@ -36,6 +36,7 @@ function Painel() {
                             Senha:<input onChange={(e) => setUser({ ...user, senha: e.target.value })} className="bg-white text-black rounded-full p-2 " id="cPass" type="password" placeholder="senhA1@" />
 
                             Data de Nascimento:<input onChange={(e) => setUser({ ...user, nascimento: e.target.value })} className="bg-white text-black rounded-full p-2 " id="cDate" type="date" />
+                            
                             <a onClick={handleRegister} className="mt-5 bg-[#FF893B] text-white text-center rounded-md py-2 cursor-pointer ">Salvar</a>
                         </form>
 

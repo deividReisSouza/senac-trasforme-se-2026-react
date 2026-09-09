@@ -1,6 +1,9 @@
 import { Link } from "react-router";
 
 function Home() {
+
+  const [logU, setLogU] = useState(false)
+
   return (
     <div className="bg-[#5278B5]">
       <nav className="flex px-4 py-2 items-center bg-primary ">
@@ -9,7 +12,7 @@ function Home() {
         <a className="mr-2 p-2 text-white" href="#about">Sobre</a>
         <a className="mr-2 p-2 text-white" href="#prices">Preços</a>
         <a className="mr-2 p-2 text-white" href="#features">Benefícios</a>
-        <Link className="py-2 px-4 bg-secondary text-white rounded-x1 ml-auto" to="/login">Preencha</Link>
+        <a onClick={()=> set} className="py-2 px-4 bg-secondary text-white rounded-x1 ml-auto" to="/login">Preencha</a>
       </nav>
       <main>
         <section id="about" className="bg-secondary py-5 ">
