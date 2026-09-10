@@ -19,7 +19,7 @@ function Auth() {
         }
 
         if(user.senha == pass){
-            localStorage.setItem(user)
+            localStorage.setItem("logado")
             nav("/painel")
         }else{
             setAlert("Senha incorreta")
