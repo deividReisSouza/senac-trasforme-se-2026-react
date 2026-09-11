@@ -27,14 +27,14 @@ function Home() {
 
   }
   return (
-    <div className="bg-[#5278B5]">
-      <nav className="flex px-4 py-2 items-center bg-primary ">
+    <div className="">
+      <nav className="flex px-4 py-2 items-center bg-blue-900 ">
 
-        <a className="mr-2 p-2 text-white" href="example.html">Exemplo</a>
-        <a className="mr-2 p-2 text-white" href="#about">Sobre</a>
-        <a className="mr-2 p-2 text-white" href="#prices">Preços</a>
-        <a className="mr-2 p-2 text-white" href="#features">Benefícios</a>
-        <a onClick={()=>setModal(true)} className="py-2 px-4 bg-secondary text-white rounded-x1 ml-auto">Preencha</a>
+        <a className="mr-2 p-2 text-white hover:bg-orange-400 rounded-lg " href="example.html">Exemplo</a>
+        <a className="mr-2 p-2 text-white hover:bg-orange-400 rounded-lg" href="#about">Sobre</a>
+        <a className="mr-2 p-2 text-white hover:bg-orange-400 rounded-lg" href="#prices">Preços</a>
+        <a className="mr-2 p-2 text-white hover:bg-orange-400 rounded-lg" href="#features">Benefícios</a>
+        <a onClick={()=>setModal(true)} className="py-2 px-4 bg-orange-500 cursor-pointer text-white rounded-lg ml-auto">Entrar</a>
       </nav>
       <main>
         <section id="about" className="bg-secondary py-5 ">
@@ -95,7 +95,7 @@ function Home() {
             <div className="h-full flex intems-center min-h-screen ">
               <div className="w-1/6 mx-auto my-auto p-5 bg-primary rounded-lg shadow-md flex flex-col">
 
-                <Link to="/" className="mb-5 text-white text-center rounded-md text-top text-left">Voltar</Link>
+                <a onClick={()=>setModal(false)} className="mb-5 text-white text-center rounded-md text-top text-left cursor-pointer">Voltar</a>
                 <div>{alert}</div>
                 <form className="flex text-white gap-[20px] text-center flex-col">
                   <div className="text-left" >Email:</div><input className="bg-white text-black rounded-full p-2" id="cMailLogin" type="email" value={email} placeholder="@gmail.com" onChange={(e) => setEmail(e.target.value)} />
