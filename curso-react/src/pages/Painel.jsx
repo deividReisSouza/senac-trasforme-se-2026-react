@@ -10,7 +10,6 @@ function Painel() {
     const [logado, setLogado] = useState({})
     const [isEdit, setIsEdit] = useState(false)
     const [index, setIndex] = useState(-1)
-    const [saveButtom, setSaveButtom] = useState("")
 
     useEffect(() => {
         const logado = JSON.parse(localStorage.getItem('logado'))
@@ -31,7 +30,7 @@ function Painel() {
             newUsers = [...users]
             newUsers[index] = user
         } else {
-            newUsers = [...users]
+            newUsers = [...users, user]
         }
         setUsers(newUsers)
         localStorage.setItem('users', JSON.stringify(newUsers))
