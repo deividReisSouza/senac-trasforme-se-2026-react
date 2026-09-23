@@ -37,7 +37,7 @@ function Home() {
         <a onClick={()=>setModal(true)} className="py-2 px-4 bg-orange-500 cursor-pointer text-white rounded-lg ml-auto">Entrar</a>
       </nav>
       <main>
-        <section id="about" className="bg-secondary py-5 ">
+        <section id="about" className="bg-orange-500 py-5 ">
           <div className="max-w-lg mx-auto py-5 ">
             <h2>
               Como a ProtesePay Muda Vidas?
