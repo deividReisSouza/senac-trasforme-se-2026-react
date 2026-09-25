@@ -1,4 +1,4 @@
-import { Link ,useNavigate} from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useState } from "react";
 
 function Home() {
@@ -9,20 +9,25 @@ function Home() {
   const nav = useNavigate();
   const [modal, setModal] = useState(false);
 
-  function handleLogin() {
-    const users = JSON.parse(localStorage.getItem('users'))
-    let user = users.find(u => {
-      return u.email == email
-    })
-    if (!user) {
-      setAlert("Usuario não econtrado")
-    }
+  async function handleLogin() {
+    const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
+      email: user.email,
+      password: user.password
+    });
 
-    if (user.senha == pass) {
-      localStorage.setItem("logado")
-      nav("/painel")
-    } else {
-      setAlert("Senha incorreta")
+    const { email, password, dataProf } = user
+
+    const { error: profileError } = await supabase
+      .from('profiles')
+      .insert({
+        ...dataProf,
+        user_id: loginData.user.id
+      });
+
+    if (profileError) {
+      setMsg(profileError.message)
+      setSpiner(false)
+      return;
     }
 
   }
@@ -34,7 +39,7 @@ function Home() {
         <a className="mr-2 p-2 text-white hover:bg-orange-400 rounded-lg" href="#about">Sobre</a>
         <a className="mr-2 p-2 text-white hover:bg-orange-400 rounded-lg" href="#prices">Preços</a>
         <a className="mr-2 p-2 text-white hover:bg-orange-400 rounded-lg" href="#features">Benefícios</a>
-        <a onClick={()=>setModal(true)} className="py-2 px-4 bg-orange-500 cursor-pointer text-white rounded-lg ml-auto">Entrar</a>
+        <a onClick={() => setModal(true)} className="py-2 px-4 bg-orange-500 cursor-pointer text-white rounded-lg ml-auto">Entrar</a>
       </nav>
       <main>
         <section id="about" className="bg-orange-500 py-5 ">
@@ -89,13 +94,13 @@ function Home() {
           </div>
         </section>
       </main >
-      {modal && 
-      (<div className="fixed flex top-0 right-0 bottom-0 left-0 items-center justify-center bg-black/50 z-50">
+      {modal &&
+        (<div className="fixed flex top-0 right-0 bottom-0 left-0 items-center justify-center bg-black/50 z-50">
           <div className="w-full bg-white/50 z-50">
             <div className="h-full flex intems-center min-h-screen ">
               <div className="w-1/6 mx-auto my-auto p-5 bg-primary rounded-lg shadow-md flex flex-col">
 
-                <a onClick={()=>setModal(false)} className="mb-5 text-white text-center rounded-md text-top text-left cursor-pointer">Voltar</a>
+                <a onClick={() => setModal(false)} className="mb-5 text-white text-center rounded-md text-top text-left cursor-pointer">Voltar</a>
                 <div>{alert}</div>
                 <form className="flex text-white gap-[20px] text-center flex-col">
                   <div className="text-left" >Email:</div><input className="bg-white text-black rounded-full p-2" id="cMailLogin" type="email" value={email} placeholder="@gmail.com" onChange={(e) => setEmail(e.target.value)} />
@@ -109,7 +114,7 @@ function Home() {
             </div>
           </div>
         </div>)
-        }
+      }
       <footer>
       </footer>
     </div>

@@ -30,7 +30,7 @@ function Painel() {
         const { data, error } = await supabase
             .from('profiles')
             .update(user)
-            .eq('id', 'index')
+            .eq('id',index)
 
         if (error) {
             setMSg(error.message)
@@ -77,10 +77,15 @@ function Painel() {
             email: user.email,
             password: user.password
         });
-        const { error: profileError } = await supabase.from('profiles').insert({
-            ...user,
-            user_id: loginData.user.id
-        });
+
+        const {email, password, dataProf} = user
+
+        const { error: profileError } = await supabase
+            .from('profiles')
+            .insert({
+                ...dataProf,
+                user_id: loginData.user.id
+            });
 
         if (profileError) {
             setMsg(profileError.message)
@@ -90,102 +95,103 @@ function Painel() {
         setSpiner(false)
         setMsg('Usuário Cadastrado')
     }
-    //async function deleteUser() {
+    async function deleteUser(index) {
 
-    //   const { error } = await supabase
-    //     .from('profiles')
-    //   .delete(user.id)
-    // .eq('id', 'index')
+        const { error } = await supabase
+            .from('profiles')
+            .delete()
+            .eq('id',index)
 
-    //}
-
-function updateUser(user) {
-    setModal(true)
-    setUser(user)
-    setIndex(user.id)
-}
-
-return (
-    <>
-        <h3>Olá {logado?.nome} seja Bem Vindo á tela de Gerenciamento de usúarios</h3>
-        {modal &&
-            (<div
-                className="fixed flex top-0 right-0 bottom-0 left-0 items-center justify-center bg-black/50 z-50">
-
-                <div className="relative max-w-md w-full p-5 bg-[#0093EA]/50 rounded-lg shadow-md flex-col">
-
-                    <a className="bg-red-500 absolute top-0 right-0 px-4 py-3 rounded-full text-white hover:shadow-inner cursor-pointer " onClick={() => { setModal(false); setIsEdit(false); setUser({}); setIndex(-1) }}>X</a>
-                    <h2 className="text-white">Novo Usuário</h2>
-
-                    {isEdit ? (
-                        <form className="flex-col flex text-white">
-                            Nome Completo:<input value={user.full_name} onChange={(e) => setUser({ ...user, full_name: e.target.value })} className="bg-white text-black rounded-full p-2 " type="text" placeholder="Nome completo" />
-
-                            Numero de telefone:<input value={user.phone} onChange={(e) => setUser({ ...user, phone: e.target.value })} className="bg-white text-black rounded-full p-2 " type="text" placeholder="(00) 00000-0000" />
-                            {!index && (
-                                <>
-                                    Email:<input value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} className="bg-white text-black rounded-full p-2 " type="email" placeholder="@gmail.com" />
-
-                                    Senha:<input onChange={(e) => setUser({ ...user, password: e.target.value })} className="bg-white text-black rounded-full p-2 " id="cPass" type="password" placeholder="senhA1@" />
-                                </>
-                            )}
-                            CPF:<input value={user.cpf} onChange={(e) => setUser({ ...user, cpf: e.target.value })} className="bg-white text-black rounded-full p-2 " type="text" placeholder="000.000.000-00" />
-
-                            Data de Nascimento:<input value={user.birth} onChange={(e) => setUser({ ...user, brith: e.target.value })} className="bg-white text-black rounded-full p-2 " id="cDate" type="date" />
-
-                            Genêro:<input value={user.gener} onChange={(e) => setUser({ ...user, gener: e.target.value })} className="bg-white text-black rounded-full p-2 " id="cDate" type="date" />
-
-                            <a onClick={() => {
-                                if (index == -1)
-                                    handleRegister()
-
-                                else
-                                    editUser()
-                            }} className="mt-5 bg-green-500 text-white text-center rounded-md py-2 cursor-pointer ">{spiner ? '...' : (index != -1 ? "Salvar" : "Cadastrar")}</a>
-                            {msg}
-                            {index != -1 && (
-                                <a onClick={() => setIsEdit(false)} className="mt-5 bg-red-500 text-black text-center rounded-md py-2 cursor-pointer ">Cancelar</a>
-                            )}
-                        </form>) : //else
-                        (
-                            <div>
-                                <p> <b> Nome: </b> {user.full_name}</p>
-                                <p> <b> Email: </b> {user.email}</p>
-                                <p> <b> Senha: </b>  {user.senha}</p>
-                                <p> <b> Data de Nascimento: </b>  {user.birth}</p>
-                                <a onClick={() => setIsEdit(true)} className="mt-5 bg-[#FF893B] text-white text-center rounded-md py-2 cursor-pointer ">Editar</a>
-
-                            </div>
-                        )
-                    }
-                </div>
-            </div >)
         }
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Data de Nascimento</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
 
-            <tbody className="text-white">
-                {users.map((u) => (
-                    <tr key={u.id}>
-                        <td>{u.full_name}</td>
-                        <td>{u.cpf}</td>
-                        <td>{u.birth}</td>
-                        <td>
-                            <a className="cursor-pointer px-3 mx-4 hover:bg-green-300 shadow-md text-white rounded-full bg-green-500" onClick={() => updateUser(u)}>V</a>
-                            <a className="cursor-pointer px-3 mx-4 hover:bg-red-300 shadow-md text-white rounded-full bg-red-500" onClick={() => deleteUser(u)}>X</a>
-                        </td>
-                    </tr>
-                ))}
-            </tbody>
-        </table>
-        <a onClick={() => { setModal(true); setIsEdit(true) }} className=" cursor-pointer rounded-full bg-primary text-white px-4 py-3 fixed bottom-0 right-0 hover:shadow-inner"> +</a>
-    </>
-)}
-export default Painel;
+        function updateUser(user) {
+            setModal(true)
+            setUser(user)
+            setIndex(user.id)
+        }
+
+        return (
+            <>
+                <h3>Olá {logado?.nome} seja Bem Vindo á tela de Gerenciamento de usúarios</h3>
+                {modal &&
+                    (<div
+                        className="fixed flex top-0 right-0 bottom-0 left-0 items-center justify-center bg-black/50 z-50">
+
+                        <div className="relative max-w-md w-full p-5 bg-[#0093EA]/50 rounded-lg shadow-md flex-col">
+
+                            <a className="bg-red-500 absolute top-0 right-0 px-4 py-3 rounded-full text-white hover:shadow-inner cursor-pointer " onClick={() => { setModal(false); setIsEdit(false); setUser({}); setIndex(-1) }}>X</a>
+                            <h2 className="text-white">Novo Usuário</h2>
+
+                            {isEdit ? (
+                                <form className="flex-col flex text-white">
+                                    Nome Completo:<input value={user.full_name} onChange={(e) => setUser({ ...user, full_name: e.target.value })} className="bg-white text-black rounded-full p-2 " type="text" placeholder="Nome completo" />
+
+                                    Numero de telefone:<input value={user.phone} onChange={(e) => setUser({ ...user, phone: e.target.value })} className="bg-white text-black rounded-full p-2 " type="text" placeholder="(00) 00000-0000" />
+                                    {!index && (
+                                        <>
+                                            Email:<input value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} className="bg-white text-black rounded-full p-2 " type="email" placeholder="@gmail.com" />
+
+                                            Senha:<input onChange={(e) => setUser({ ...user, password: e.target.value })} className="bg-white text-black rounded-full p-2 " id="cPass" type="password" placeholder="senhA1@" />
+                                        </>
+                                    )}
+                                    CPF:<input value={user.cpf} onChange={(e) => setUser({ ...user, cpf: e.target.value })} className="bg-white text-black rounded-full p-2 " type="text" placeholder="000.000.000-00" />
+
+                                    Data de Nascimento:<input value={user.birth} onChange={(e) => setUser({ ...user, brith: e.target.value })} className="bg-white text-black rounded-full p-2 " id="cDate" type="date" />
+
+                                    Genêro:<input value={user.gener} onChange={(e) => setUser({ ...user, gener: e.target.value })} className="bg-white text-black rounded-full p-2 " id="cDate" type="date" />
+
+                                    <a onClick={() => {
+                                        if (index == -1)
+                                            handleRegister()
+
+                                        else
+                                            editUser()
+                                    }} className="mt-5 bg-green-500 text-white text-center rounded-md py-2 cursor-pointer ">{spiner ? '...' : (index != -1 ? "Salvar" : "Cadastrar")}</a>
+                                    {msg}
+                                    {index != -1 && (
+                                        <a onClick={() => setIsEdit(false)} className="mt-5 bg-red-500 text-black text-center rounded-md py-2 cursor-pointer ">Cancelar</a>
+                                    )}
+                                </form>) : //else
+                                (
+                                    <div>
+                                        <p> <b> Nome: </b> {user.full_name}</p>
+                                        <p> <b> Email: </b> {user.email}</p>
+                                        <p> <b> Senha: </b>  {user.senha}</p>
+                                        <p> <b> Data de Nascimento: </b>  {user.birth}</p>
+                                        <a onClick={() => setIsEdit(true)} className="mt-5 bg-[#FF893B] text-white text-center rounded-md py-2 cursor-pointer ">Editar</a>
+
+                                    </div>
+                                )
+                            }
+                        </div>
+                    </div >)
+                }
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Data de Nascimento</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody className="text-white">
+                        {users.map((u) => (
+                            <tr key={u.id}>
+                                <td>{u.full_name}</td>
+                                <td>{u.cpf}</td>
+                                <td>{u.birth}</td>
+                                <td>
+                                    <a className="cursor-pointer px-3 mx-4 hover:bg-green-300 shadow-md text-white rounded-full bg-green-500" onClick={() => updateUser(u)}>V</a>
+                                    <a className="cursor-pointer px-3 mx-4 hover:bg-red-300 shadow-md text-white rounded-full bg-red-500" onClick={() => deleteUser(u)}>X</a>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+                <a onClick={() => { setModal(true); setIsEdit(true) }} className=" cursor-pointer rounded-full bg-primary text-white px-4 py-3 fixed bottom-0 right-0 hover:shadow-inner"> +</a>
+            </>
+        )
+    }
+    export default Painel;
