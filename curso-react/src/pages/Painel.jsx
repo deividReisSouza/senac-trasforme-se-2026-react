@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { Link } from "react-router";
 import { supabase } from "../../utils/supabase";
+import { ToastSucess, useToast} from "../components/Toast";
 
 
 function Painel() {
@@ -11,8 +12,8 @@ function Painel() {
     const [logado, setLogado] = useState({})
     const [isEdit, setIsEdit] = useState(false)
     const [index, setIndex] = useState(-1)
-    const [msg, setMsg] = useState(false)
-    const [spiner, setSpiner] = useState('')
+    const {msg, setMsg} = useToast()
+    const [spiner, setSpiner] = useState(false)
 
     useEffect(() => {
         const logado = JSON.parse(localStorage.getItem('logado'))
@@ -147,7 +148,7 @@ function Painel() {
                                         else
                                             editUser()
                                     }} className="mt-5 bg-green-500 text-white text-center rounded-md py-2 cursor-pointer ">{spiner ? '...' : (index != -1 ? "Salvar" : "Cadastrar")}</a>
-                                    {msg}
+                                    
                                     {index != -1 && (
                                         <a onClick={() => setIsEdit(false)} className="mt-5 bg-red-500 text-black text-center rounded-md py-2 cursor-pointer ">Cancelar</a>
                                     )}
@@ -190,6 +191,7 @@ function Painel() {
                         ))}
                     </tbody>
                 </table>
+                <ToastSucess msg={msg} setMsg={setMsg} />
                 <a onClick={() => { setModal(true); setIsEdit(true) }} className=" cursor-pointer rounded-full bg-primary text-white px-4 py-3 fixed bottom-0 right-0 hover:shadow-inner"> +</a>
             </>
         )
